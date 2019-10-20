@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Fascinate+Inline&display=swap" rel="stylesheet">
+
+    <title>Giphy Ajax</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <div id="background"></div>
+        <h1>Cartoon Characters from the 1920's </h1>
+        <br>
+        <form id=" " action="">
+            <label for="tool-input" id="label">SEARCH:</label> <!-- -->
+            <input type="text" id="tool-input" value=" "> <!-- INPUT -->
+            <!-- Button triggers new movie to be added: -->
+            <input type="submit" id="add-tool" value="Add to favorites "> <!-- SUBMIT BUTTON-->
+            <div id="addNewButtons" value=""></div> <!-- EMPTY DIV NEW BUTTONS -->
+            <!-- <input type="button" value="Make favorite" id="check" /> -->
+        </form>
+        <br>
+        <div id="addButtonsArray"></div> <!-- ARRAY BUTTONS -->
+        <br>
+        <div id="gifs-appear-here"></div> <!-- GIFS APPEAR HERE -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            var arrayCleaning = ["Popeye", "Mickey Mouse", "Betty Boop", "Felix the Cat"];
+
+            function displayGifs() {
+                event.preventDefault();
+                var topic = $(this).attr("data-name-tool"); //
+
+                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&apikey=sIsYbmw6h1wJJsPI3qaeY1Oy5a5R4CzE&limit=10";
+                console.log(queryURL);
+
+                $.ajax({ url: queryURL, method: "GET" }).then(function (response) {
+                    console.log("RESPONSE", response);
+                    var results = response.data;
+
+                    for (var i = 0; i < results.length; i++) {  //GIFS
+                        var gifDiv = $("<div>");
+                        var title = results[i].title;
+                        var rating = results[i].rating;
+                        var p = $("<p>").text("Title: " + title + " " + "(Rating: " + rating + ")");
+                        var personImage = $("<img>");
+                        personImage.attr("src", results[i].images.fixed_height.url);
+                        gifDiv.prepend(p);
+                        gifDiv.prepend(personImage);
+
+                        $("#gifs-appear-here").prepend(gifDiv);
+
+                    }
+                });
+            };
+
+            function renderArray() { //CREATE AND DISPLAY BUTTONS FROM ARRAY
+                $("#addButtonsArray").empty();// Deleting the movies prior to adding new movies.this is necessary otherwise we will have repeat buttons)
+                // This function handles events where one button is clicked
+                $("#add-movie").on("click", function (event) {
+                    event.preventDefault();
+                    var movie = $("#movie-input").val().trim();
+                    movies.push(movie);
+                    renderButtons();
+                });
+
+
+                for (var i = 0; i < arrayCleaning.length; i++) { //
+                    var a = $("<button>");
+                    a.addClass("cleaning");
+                    a.attr("data-name-tool", arrayCleaning[i]);  // Adding a data-* attribute
+                    a.text(arrayCleaning[i]);
+                    $("#addButtonsArray").append(a);  // Adding the button to the div
+                };
+            };
+
+            $("#add-tool").on("click", function (event) {
+                console.log(event); //OK
+                event.preventDefault();
+                var newTool = $("#tool-input").val().trim();
+                console.log(newTool); //OK
+                arrayCleaning.push(newTool);
+                renderArray();
+                console.log(renderArray);//OK
+            });
+
+
+
+
+            // // Generic function for displaying the gifs
+            $(document).on("click", ".cleaning", displayGifs);
+
+            renderArray();
+
+        </script>
+    </div>
+</body>
+
+</html>
