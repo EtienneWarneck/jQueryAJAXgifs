@@ -7,5 +7,10 @@ Tools: HTML, CSS, jQuery, ajax, black and white cartoons!
 
 To visit the site: https://etiennewarneck.github.io/jQueryAJAXgifs/
 
+
+Screenshots:
+
 ![](assets/felix.png)
+
+
 ! [](assets/search.png)
