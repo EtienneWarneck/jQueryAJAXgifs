@@ -13,4 +13,4 @@ Screenshots:
 ![](assets/felix.png)
 
 
-! [](assets/search.png)
+![](assets/search.png)
